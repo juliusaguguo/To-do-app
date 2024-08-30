@@ -197,9 +197,96 @@ form.addEventListener('submit', e => {
 
 
 
-
+/* 
 
  let form = document.querySelector("form");
+let input = document.querySelector("input");
+let output = document.querySelector(".output");
+let message = document.querySelector(".message-container");
+
+// Load todos from localStorage on page load
+window.addEventListener('load', () => {
+    let todos = JSON.parse(localStorage.getItem('todos')) || [];
+    // todos.forEach(todo => {
+        output.appendChild(getTodo(todo));
+    });
+});
+
+function getTodo(value) {
+    let todo = document.createElement("div");
+    let textEl = document.createElement("span");
+    textEl.innerHTML = value;
+    // todo.appendChild(textEl);
+    message.classList.toggle("success");
+    message.textContent = "Item Added";
+
+    setTimeout(() => {
+        message.classList.toggle("success");
+    }, 2000);
+
+    let closeEl = document.createElement("span");
+    closeEl.innerHTML = "&times;";
+    closeEl.classList.add("delete");
+
+    closeEl.addEventListener("click", () => {
+        output.removeChild(todo);
+        removeTodoFromLocalStorage(value);
+        message.classList.toggle("error");
+        message.textContent = "Item Deleted";
+
+        setTimeout(() => {
+            message.classList.toggle("error");
+        }, 2000);
+    });
+
+    // todo.appendChild(closeEl);
+    // todo.classList.add("todo");
+    return todo;
+}
+
+// Save todo to localStorage
+function saveTodoToLocalStorage(value) {
+    let todos = JSON.parse(localStorage.getItem('todos')) || [];
+    // todos.push(value);
+    localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+// Remove todo from localStorage
+function removeTodoFromLocalStorage(value) {
+    let todos = JSON.parse(localStorage.getItem('todos')) || [];
+    // todos = todos.filter(todo => todo !== value);
+    localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let value = input.value;
+    if (value.trim() !== "") {
+        output.appendChild(getTodo(value));
+        saveTodoToLocalStorage(value); // Save todo to localStorage
+        input.value = "";
+    }
+}); */
+
+
+
+
+
+
+
+
+// Service Worker Registration
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').then((registration) => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, (err) => {
+            console.log('ServiceWorker registration failed: ', err);
+        });
+    });
+}
+
+let form = document.querySelector("form");
 let input = document.querySelector("input");
 let output = document.querySelector(".output");
 let message = document.querySelector(".message-container");
